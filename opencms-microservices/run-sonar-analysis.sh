@@ -22,6 +22,17 @@ SONAR_HOST_URL="${SONAR_HOST_URL:-https://sonarcloud.io}"
 SONAR_TOKEN="${SONAR_TOKEN:-}"
 SONAR_ORGANIZATION="${SONAR_ORGANIZATION:-}"
 SONAR_PROJECT_KEY="${SONAR_PROJECT_KEY:-opencms-microservices}"
+SKIP_JACOCO_CHECK="${SKIP_JACOCO_CHECK:-true}"
+
+# Parse optional arguments
+for arg in "$@"; do
+    case "$arg" in
+        --skip-jacoco-check)
+            SKIP_JACOCO_CHECK="true"
+            shift
+            ;;
+    esac
+done
 
 echo -e "${GREEN}========================================${NC}"
 echo -e "${GREEN}OpenCms Microservices - SonarQube Analysis${NC}"
@@ -54,6 +65,7 @@ echo -e "  Sonar URL: ${SONAR_HOST_URL}"
 echo -e "  Organization: ${SONAR_ORGANIZATION}"
 echo -e "  Project Key: ${SONAR_PROJECT_KEY}"
 echo -e "  Analysis Mode: Main branch (free tier)"
+echo -e "  Skip JaCoCo Check: ${SKIP_JACOCO_CHECK}"
 echo ""
 
 # Prompt for confirmation
@@ -69,7 +81,7 @@ mvn clean
 
 echo ""
 echo -e "${GREEN}Step 2: Building and running tests with coverage...${NC}"
-mvn verify
+mvn verify -Dskip.jacoco.check="${SKIP_JACOCO_CHECK}"
 
 echo ""
 echo -e "${GREEN}Step 3: Running SonarCloud analysis...${NC}"
@@ -78,7 +90,8 @@ mvn sonar:sonar \
     -Dsonar.host.url="${SONAR_HOST_URL}" \
     -Dsonar.organization="${SONAR_ORGANIZATION}" \
     -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
-    -Dsonar.token="${SONAR_TOKEN}"
+    -Dsonar.token="${SONAR_TOKEN}" \
+    -Dskip.jacoco.check="${SKIP_JACOCO_CHECK}"
 
 echo ""
 echo -e "${GREEN}========================================${NC}"

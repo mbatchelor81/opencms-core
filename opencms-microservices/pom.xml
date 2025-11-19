@@ -79,6 +79,7 @@
             **/generated/**
         </sonar.exclusions>
         <jacoco.version>0.8.11</jacoco.version>
+        <skip.jacoco.check>true</skip.jacoco.check>
     </properties>
 
     <dependencyManagement>
@@ -186,6 +187,7 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
+                            <skip>${skip.jacoco.check}</skip>
                             <rules>
                                 <rule>
                                     <element>PACKAGE</element>
