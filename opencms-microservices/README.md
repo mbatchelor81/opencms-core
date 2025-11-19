@@ -161,6 +161,35 @@ cd opencms-migration-tools/compatibility-tests
 mvn test
 ```
 
+## Code Quality & Security Scanning
+
+### SonarCloud Analysis
+
+The project includes SonarCloud integration for continuous code quality and security scanning.
+
+**Quick Start:**
+
+```bash
+# 1. Configure .env.sonar with your SonarCloud credentials
+# 2. Run analysis
+./run-sonar-analysis.sh
+```
+
+**What's Analyzed:**
+- Security vulnerabilities (SQL injection, XSS, hardcoded credentials)
+- Bugs and code smells
+- Code coverage (target: 60%+)
+- Code duplications
+- Security hotspots
+
+**Documentation:**
+- [SonarCloud Quick Start](SONARCLOUD_QUICK_START.md) - 3-minute setup
+- [SonarCloud Detailed Setup](SONARCLOUD_SETUP.md) - Complete guide
+- [Local SonarQube Setup](SONARQUBE_SETUP.md) - For local server (alternative)
+
+**View Results:**
+https://sonarcloud.io/project/overview?id=opencms-microservices
+
 ## Deployment
 
 ### Local Development (Docker Compose)
