@@ -1,0 +1,53 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'opencms-microservices'
+    environment: 'development'
+
+# Alertmanager configuration (optional)
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Scrape configurations
+scrape_configs:
+  # Identity Service metrics
+  - job_name: 'identity-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['identity-service:8081']
+        labels:
+          service: 'identity'
+          application: 'identity-service'
+
+  # Content Service metrics (future)
+  - job_name: 'content-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['content-service:8082']
+        labels:
+          service: 'content'
+          application: 'content-service'
+
+  # Publishing Service metrics (future)
+  - job_name: 'publishing-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['publishing-service:8083']
+        labels:
+          service: 'publishing'
+          application: 'publishing-service'
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # PostgreSQL exporter (optional)
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+        labels:
+          service: 'database'

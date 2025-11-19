@@ -97,4 +97,10 @@ All code you generate must follow the standards and practices below.
 
 ---
 
+## Service Module Implementation Learnings
+- Always bind `@PathVariable`s explicitly (or compile with `-parameters`) so Spring MVC can resolve path parameters consistently across environments
+- Model optimistic-lock columns like `version` in your domain objects and map them to persistence entities to keep Hibernate’s detached-entity checks satisfied
+- Maintain lightweight end-to-end smoke scripts (create/read/update/delete) for every microservice API to catch wiring or persistence regressions immediately
+- When making cross-module changes, rebuild and reinstall every dependent module (API, core, persistence, application) before restarting the service to ensure all layers pick up the fixes
+
 This ruleset defines the coding, architectural, and operational standards for all Java services in this modernization effort.

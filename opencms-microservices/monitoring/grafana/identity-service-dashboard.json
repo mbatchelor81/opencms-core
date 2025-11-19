@@ -1,0 +1,118 @@
+{
+  "dashboard": {
+    "title": "Identity Service Monitoring",
+    "tags": ["opencms", "identity", "microservices"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Service Health",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=\"identity-service\"}",
+            "legendFormat": "Status"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Request Rate (req/s)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_server_requests_seconds_count{job=\"identity-service\"}[5m])",
+            "legendFormat": "{{uri}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4}
+      },
+      {
+        "id": 3,
+        "title": "Response Time (p95)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_server_requests_seconds_bucket{job=\"identity-service\"}[5m]))",
+            "legendFormat": "{{uri}}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4}
+      },
+      {
+        "id": 4,
+        "title": "Error Rate (%)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_server_requests_seconds_count{job=\"identity-service\",status=~\"5..\"}[5m]) / rate(http_server_requests_seconds_count{job=\"identity-service\"}[5m]) * 100",
+            "legendFormat": "Error Rate"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12}
+      },
+      {
+        "id": 5,
+        "title": "JVM Memory Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "jvm_memory_used_bytes{job=\"identity-service\",area=\"heap\"}",
+            "legendFormat": "Heap Used"
+          },
+          {
+            "expr": "jvm_memory_max_bytes{job=\"identity-service\",area=\"heap\"}",
+            "legendFormat": "Heap Max"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12}
+      },
+      {
+        "id": 6,
+        "title": "Database Connection Pool",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "hikaricp_connections_active{job=\"identity-service\"}",
+            "legendFormat": "Active Connections"
+          },
+          {
+            "expr": "hikaricp_connections_idle{job=\"identity-service\"}",
+            "legendFormat": "Idle Connections"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20}
+      },
+      {
+        "id": 7,
+        "title": "Dual-Write Success Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "rate(dual_write_success_total{job=\"identity-service\"}[5m]) / rate(dual_write_attempts_total{job=\"identity-service\"}[5m]) * 100",
+            "legendFormat": "Success Rate %"
+          }
+        ],
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 20}
+      },
+      {
+        "id": 8,
+        "title": "Dual-Write Latency (ms)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(dual_write_duration_seconds_bucket{job=\"identity-service\"}[5m])) * 1000",
+            "legendFormat": "p95 Latency"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24}
+      }
+    ],
+    "refresh": "30s",
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    }
+  }
+}

@@ -154,6 +154,32 @@ services:
     networks:
       - opencms-network
 
+  # Identity Service - Authentication & Authorization
+  identity-service:
+    build:
+      context: ./opencms-identity-service
+      dockerfile: Dockerfile
+    container_name: opencms-identity-service
+    depends_on:
+      - postgres-identity
+    ports:
+      - "8081:8081"
+    environment:
+      DB_HOST: postgres-identity
+      DB_PORT: 5432
+      DB_NAME: identity
+      DB_USERNAME: opencms
+      DB_PASSWORD: opencms123
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - opencms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
 volumes:
   identity-db-data:
   content-db-data:
