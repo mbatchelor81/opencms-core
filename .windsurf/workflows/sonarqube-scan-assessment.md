@@ -14,18 +14,24 @@ auto_execution_mode: 3
 ## Workflow Steps
 
 ### 1. Execute Scan
-Run the analysis script:
+Run the analysis script and **WAIT FOR COMPLETION**:
 ```bash
 cd opencms-microservices
 ./run-sonar-analysis.sh
 ```
+
+**IMPORTANT**: The script must fully complete before proceeding to step 2. This typically takes 30-60 seconds.
 
 The script will:
 - Clean previous builds
 - Run tests with coverage (`mvn verify`)
 - Upload results to SonarQube (`mvn sonar:sonar`)
 
+**Wait for the "Analysis Complete!" message before continuing.**
+
 ### 2. Retrieve Analysis Results via MCP
+
+**ONLY proceed after step 1 completes successfully.**
 
 #### 2.1 Search for Issues
 ```

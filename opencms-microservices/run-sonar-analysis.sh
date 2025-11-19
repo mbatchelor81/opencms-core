@@ -53,6 +53,7 @@ echo -e "Configuration:"
 echo -e "  Sonar URL: ${SONAR_HOST_URL}"
 echo -e "  Organization: ${SONAR_ORGANIZATION}"
 echo -e "  Project Key: ${SONAR_PROJECT_KEY}"
+echo -e "  Analysis Mode: Main branch (free tier)"
 echo ""
 
 # Prompt for confirmation
